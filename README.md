@@ -15,7 +15,7 @@ Setup this metrics stack needs to do something manually on the first time.
 
 Clone the repository on GitHub:
 
-    git clone https://github.com/mlf4aiur/Metrics
+    git clone https://github.com/mlf4aiur/Metrics.git
 
 Create and start docker containers:
 
