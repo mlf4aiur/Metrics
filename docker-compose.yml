@@ -1,0 +1,79 @@
+version: '2'
+services:
+  influxdb:
+    image: influxdb:0.13-alpine
+    ports:
+      - "8083:8083"
+      - "8086:8086"
+    volumes:
+      - ./influxdb_data:/var/lib/influxdb
+  telegraf:
+    image: telegraf:0.13-alpine
+    environment:
+      HOST_ROOT_FS: "/rootfs"
+    volumes:
+      - /:/rootfs:ro
+      - /var/run:/var/run:rw
+      - /sys:/sys:ro
+      - /var/lib/docker/:/var/lib/docker:ro
+      - ./telegraf.conf:/etc/telegraf/telegraf.conf:ro
+      # - ./telegraf-user.conf:/etc/telegraf/telegraf.d/telegraf-user.conf:ro
+      - ./telegraf_log:/var/log/telegraf:rw
+    depends_on:
+      - influxdb
+  # docker exec -t -i $(docker ps | awk /grafana/'{print $1}') grafana-cli plugins install grafana-piechart-panel
+  # docker exec -t -i $(docker ps | awk /grafana/'{print $1}') chown -R grafana:grafana /var/lib/grafana/plugins
+  grafana:
+    image: grafana/grafana:3.1.1
+    ports:
+      - "3000:3000"
+    environment:
+      GF_SECURITY_ADMIN_PASSWORD: "admin123"
+      # GF_LOG_LEVEL: "trace"
+    volumes:
+      - ./grafana_data:/var/lib/grafana
+      - ./grafana_log:/var/log/grafana
+      - ./grafana_plugins:/var/lib/grafana/plugins
+    depends_on:
+      - influxdb
+  zookeeper:
+    image: digitalwonderland/zookeeper
+    ports:
+      - "2181:2181"
+      - "2888:2888"
+      - "3888:3888"
+    volumes:
+      - ./zookeeper_data:/var/lib/zookeeper/
+  kafka1:
+    image: wurstmeister/kafka:0.10.0.0
+    ports:
+      - "9092:9092"
+      - "8778:8778"
+    volumes:
+      - ./kafka1:/kafka
+      - ./jolokia-jvm-1.3.3-agent.jar:/opt/jolokia/jolokia-jvm-1.3.3-agent.jar
+    environment:
+      KAFKA_CREATE_TOPICS: "Topic1:1:1,Topic2:1:1"
+      KAFKA_ZOOKEEPER_CONNECT: "zookeeper:2181"
+      KAFKA_ADVERTISED_HOST_NAME: "kafka1"
+      KAFKA_ADVERTISED_PORT: 9092
+      KAFKA_OPTS: " -javaagent:/opt/jolokia/jolokia-jvm-1.3.3-agent.jar=host=0.0.0.0"
+    depends_on:
+      - zookeeper
+      - influxdb
+  kafka2:
+    image: wurstmeister/kafka:0.10.0.0
+    ports:
+      - "19092:19092"
+      - "18778:8778"
+    volumes:
+      - ./kafka2:/kafka
+      - ./jolokia-jvm-1.3.3-agent.jar:/opt/jolokia/jolokia-jvm-1.3.3-agent.jar
+    environment:
+      KAFKA_ZOOKEEPER_CONNECT: "zookeeper:2181"
+      KAFKA_ADVERTISED_HOST_NAME: "kafka2"
+      KAFKA_ADVERTISED_PORT: 19092
+      KAFKA_OPTS: " -javaagent:/opt/jolokia/jolokia-jvm-1.3.3-agent.jar=host=0.0.0.0"
+    depends_on:
+      - zookeeper
+      - influxdb

@@ -1,0 +1,12 @@
+{
+  "access": "proxy",
+  "basicAuth": false,
+  "database": "telegraf",
+  "isDefault": false,
+  "name": "telegraf",
+  "password": "root",
+  "type": "influxdb",
+  "url": "http://influxdb:8086/",
+  "user": "root",
+  "withCredentials": false
+}
