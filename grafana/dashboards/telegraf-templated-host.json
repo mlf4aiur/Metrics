@@ -581,7 +581,7 @@
             "nullText": null,
             "postfix": "",
             "postfixFontSize": "50%",
-            "prefix": "Disk Space:",
+            "prefix": "Free Disk Space:",
             "prefixFontSize": "100%",
             "rangeMaps": [
               {
@@ -645,6 +645,12 @@
                     "key": "host",
                     "operator": "=~",
                     "value": "/^$host$/"
+                  },
+                  {
+                    "condition": "AND",
+                    "key": "path",
+                    "operator": "=",
+                    "value": "/"
                   }
                 ]
               }
@@ -3989,7 +3995,8 @@
           ],
           "query": "SHOW TAG VALUES WITH KEY = \"host\"",
           "refresh": 1,
-          "type": "query"
+          "type": "query",
+          "allFormat": "glob"
         }
       ]
     },
