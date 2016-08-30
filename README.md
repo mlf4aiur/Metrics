@@ -60,3 +60,21 @@ Create and start docker containers:
 
     # Restart Grafana to enable new plugin
     docker-compose restart grafana
+
+Dashboard screenshots
+---------------------
+
+Telegraf Templated Container:
+![telegraf-templated-container](screenshots/telegraf-templated-container.png "Telegraf Templated Container")
+
+Telegraf Templated Docker:
+![telegraf-templated-docker](screenshots/telegraf-templated-docker.png "Telegraf Templated Docker")
+
+Telegraf Templated Host:
+![telegraf-templated-host](screenshots/telegraf-templated-host.png "Telegraf Templated Host")
+
+Zookeeper:
+![zookeeper](screenshots/zookeeper.png "Zookeeper")
+
+Kafka:
+![kafka](screenshots/kafka.png "Kafka")
