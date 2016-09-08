@@ -1,14 +1,14 @@
 version: '2'
 services:
   influxdb:
-    image: influxdb:0.13-alpine
+    image: influxdb:1.0.0-alpine
     ports:
       - "8083:8083"
       - "8086:8086"
     volumes:
       - ./influxdb_data:/var/lib/influxdb
   telegraf:
-    image: telegraf:0.13-alpine
+    image: telegraf:1.0.0-alpine
     environment:
       HOST_ROOT_FS: "/rootfs"
     volumes:
