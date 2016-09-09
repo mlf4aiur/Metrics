@@ -1,9 +1,4 @@
 .DS_Store
-grafana_data
-grafana_log
 grafana_plugins
-influxdb_data
-kafka1
-kafka2
-telegraf_log
-zookeeper_data
+data/
+log/
